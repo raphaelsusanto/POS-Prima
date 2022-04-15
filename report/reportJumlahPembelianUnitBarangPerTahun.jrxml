@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportJumlahPenjualanUnitBarangPerTahun" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tahun" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select sum(dt.jumlah),monthname(t.tgl_beli) from pembelian_detail dt
+join pembelian t on t.id_pembelian=dt.id_pembelian
+join barang b on b.id_barang=dt.id_barang
+where year(t.tgl_beli)=$P{tahun} and t.status=1
+ group by month(t.tgl_beli)
+order by month(t.tgl_beli)]]>
+	</queryString>
+	<field name="sum(dt.jumlah)" class="java.math.BigDecimal"/>
+	<field name="monthname(t.tgl_beli)" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="28" width="517" height="27"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Jumlah Pembelian Barang perBulan]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="55" width="137" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Periode tahun "+$P{tahun}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="125" height="28"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PD.Prima]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="455" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="366" y="0" width="89" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tanggal cetak ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26">
+			<staticText>
+				<reportElement x="22" y="2" width="159" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bulan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="2" width="159" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jumlah pembelian barang]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement x="22" y="19" width="200" height="1" forecolor="#14E4E2"/>
+			</line>
+			<textField>
+				<reportElement x="22" y="2" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{monthname(t.tgl_beli)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="122" y="2" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sum(dt.jumlah)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="253" splitType="Stretch">
+			<lineChart>
+				<chart>
+					<reportElement x="0" y="0" width="555" height="244"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Pembelian barang tahun "+$P{tahun}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{monthname(t.tgl_beli)}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{sum(dt.jumlah)}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+				</linePlot>
+			</lineChart>
+		</band>
+	</summary>
+</jasperReport>

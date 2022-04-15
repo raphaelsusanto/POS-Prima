@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2012 3:04:36 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.Barang" table="barang" catalog="primaDB">
+        <id name="idBarang" type="java.lang.Integer">
+            <column name="id_barang" />
+            <generator class="identity" />
+        </id>
+        <property name="nama" type="string">
+            <column name="nama" length="45" />
+        </property>
+        <property name="stock" type="java.lang.Double">
+            <column name="stock" precision="22" scale="0" />
+        </property>
+        <property name="hargaIdr" type="java.lang.Double">
+            <column name="harga_IDR" precision="22" scale="0" />
+        </property>
+        <property name="hargaUsd" type="double">
+            <column name="harga_USD" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="satuanJual" type="java.lang.Boolean">
+            <column name="satuan_jual" />
+        </property>
+        <set name="pembelianDetails" inverse="true">
+            <key>
+                <column name="id_barang" />
+            </key>
+            <one-to-many class="com.prima.entity.PembelianDetail" />
+        </set>
+        <set name="detailTransaksis" inverse="true">
+            <key>
+                <column name="id_barang" />
+            </key>
+            <one-to-many class="com.prima.entity.DetailTransaksi" />
+        </set>
+    </class>
+</hibernate-mapping>

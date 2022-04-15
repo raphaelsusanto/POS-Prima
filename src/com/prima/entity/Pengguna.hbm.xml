@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2012 3:04:36 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.Pengguna" table="pengguna" catalog="primaDB">
+        <id name="namaPengguna" type="string">
+            <column name="nama_pengguna" length="50" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="45" />
+        </property>
+        <property name="role" type="short">
+            <column name="role" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

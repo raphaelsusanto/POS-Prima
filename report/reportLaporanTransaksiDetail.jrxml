@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPenjualanGlobal" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="tglAwal" class="java.util.Date"/>
+	<parameter name="tglAkhir" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select p.nama as 'namapembeli',tbl.nama as 'namabrg', tbl.*,case(mata_uang) when 0 then '$' when 1 then 'Rp' end as mt,case(mata_uang) when 0 then kurs*jumlah*harga when 1 then jumlah*harga end as hargatotal2 from
+(
+	select t.*,b.nama,dt.jumlah,dt.harga,dt.mata_uang, 'Kredit' as kredit, case(k.status) when 0 then 'Belum Lunas' when 1 then 'Lunas' end as st1
+	from transaksi t
+	join detail_transaksi dt on t.id_transaksi=dt.id_transaksi
+	join kredit k on t.id_transaksi=k.id_transaksi
+	join barang b on b.id_barang=dt.id_barang
+	union
+	select t.*,b.nama,dt.jumlah,dt.harga,dt.mata_uang, 'Tunai' as kredit, 'Lunas' as st1
+	from transaksi t
+	join detail_transaksi dt on t.id_transaksi=dt.id_transaksi
+	join barang b on b.id_barang=dt.id_barang
+	where t.id_transaksi not in
+	(
+		select t.id_transaksi from transaksi t
+		join kredit k on t.id_transaksi=k.id_transaksi
+	)
+) as tbl join pembeli p on p.id_pembeli=tbl.id_pembeli
+where tbl.tgl_jual >=$P{tglAwal}
+and tbl.tgl_jual<=$P{tglAkhir} and status=1
+order by tbl.id_transaksi]]>
+	</queryString>
+	<field name="namapembeli" class="java.lang.String"/>
+	<field name="namabrg" class="java.lang.String"/>
+	<field name="id_transaksi" class="java.lang.String"/>
+	<field name="tgl_jual" class="java.sql.Timestamp"/>
+	<field name="kurs" class="java.lang.Integer"/>
+	<field name="harga_total" class="java.lang.Integer"/>
+	<field name="status" class="java.lang.Boolean"/>
+	<field name="id_pembeli" class="java.lang.Integer"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="jumlah" class="java.lang.Double"/>
+	<field name="harga" class="java.lang.Double"/>
+	<field name="mata_uang" class="java.lang.Boolean"/>
+	<field name="kredit" class="java.lang.String"/>
+	<field name="st1" class="java.lang.String"/>
+	<field name="mt" class="java.lang.String"/>
+	<field name="hargatotal2" class="java.lang.Double"/>
+	<variable name="harga_total_1" class="java.lang.Integer" resetType="Group" resetGroup="Group_id_transaksi" calculation="Sum">
+		<variableExpression><![CDATA[$F{harga_total}]]></variableExpression>
+	</variable>
+	<variable name="harga_total_2" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{harga_total}]]></variableExpression>
+	</variable>
+	<variable name="harga_total_3" class="java.lang.Integer" resetType="Group" resetGroup="Group_id_transaksi" calculation="Sum">
+		<variableExpression><![CDATA[$F{harga_total}]]></variableExpression>
+	</variable>
+	<variable name="hargatotal2_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{hargatotal2}]]></variableExpression>
+	</variable>
+	<group name="Group_id_transaksi">
+		<groupExpression><![CDATA[$F{id_transaksi}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="1" width="555" height="20" backcolor="#1FEFCC"/>
+				</frame>
+				<textField>
+					<reportElement x="0" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{id_transaksi}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="200" y="0" width="70" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{tgl_jual}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="513" y="0" width="42" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{kurs}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="476" y="0" width="36" height="20"/>
+					<textElement/>
+					<text><![CDATA[Kurs]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="273" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{kredit}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="374" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{st1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{namapembeli}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="21">
+				<textField pattern="Rp #,##0.00">
+					<reportElement x="300" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{harga_total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="28" width="523" height="24" forecolor="#000000"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20"/>
+				</textElement>
+				<text><![CDATA[Laporan Transaksi Detail]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="45" y="52" width="70" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{tglAwal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="132" y="52" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{tglAkhir}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="52" width="45" height="20"/>
+				<textElement/>
+				<text><![CDATA[Periode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="52" width="17" height="20"/>
+				<textElement/>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="125" height="28"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PD.Prima]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="455" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="366" y="0" width="89" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tanggal cetak ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="20" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Harga Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nama Barang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Harga Satuan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Jumlah]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="20" width="553" height="1" forecolor="#4D43ED"/>
+			</line>
+			<textField>
+				<reportElement x="200" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="1" width="70" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="97" y="0" width="33" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{mt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0.00">
+				<reportElement x="300" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{hargatotal2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{namabrg}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d/M/yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="197" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="Rp #,##0.00">
+				<reportElement x="300" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{hargatotal2_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

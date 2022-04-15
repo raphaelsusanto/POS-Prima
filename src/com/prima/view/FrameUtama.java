@@ -1,0 +1,266 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * NewJFrame.java
+ *
+ * Created on Sep 30, 2011, 1:05:04 PM
+ */
+package com.prima.view;
+
+import com.prima.service.KursFactory;
+import com.prima.view.barang.PanelBarang;
+import com.prima.view.laporan.PanelLaporan;
+import com.prima.view.pembeli.PanelPembeli;
+import com.prima.view.pembelian.PanelPembelian;
+import com.prima.view.pengaturan.PanelPengaturan;
+import com.prima.view.supplier.PanelSupplier;
+import com.prima.view.transaksi.PanelTransaksi;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author raphael
+ */
+public class FrameUtama extends javax.swing.JFrame implements WindowListener {
+     
+    /** Creates new form NewJFrame */
+    PanelBarang panelBarang = new PanelBarang();
+    PanelPembeli panelPembeli = new PanelPembeli();
+    PanelSupplier panelSupplier = new PanelSupplier();
+    PanelPembelian panelPembelian = new PanelPembelian();
+    PanelPengaturan panelPengaturan = new PanelPengaturan();
+    PanelTransaksi panelTransaksi = new PanelTransaksi();
+    PanelLaporan panelLaporan= new  PanelLaporan();
+    CardLayout cardLayout = new CardLayout();
+    JPanel centerPanel = new JPanel();
+   
+    Timer timer= new Timer();
+   
+    
+    public FrameUtama() {
+        initComponents();
+        init();
+        timer.schedule(new Task(), 1000, 10000);
+        this.addWindowListener(this);
+    }
+
+    private void init() {
+        
+        centerPanel.setLayout(cardLayout);
+        
+        
+        this.add(centerPanel, BorderLayout.CENTER);
+        centerPanel.add("panelBarang", panelBarang);
+        centerPanel.add("panelPembeli", panelPembeli);
+        centerPanel.add("panelSupplier", panelSupplier);
+        centerPanel.add("panelPembelian", panelPembelian);
+        centerPanel.add("panelPengaturan", panelPengaturan);
+        centerPanel.add("panelTambahTransaksi", panelTransaksi);
+        centerPanel.add("panelLaporan", panelLaporan);
+
+        panelMenu1.getJbtnBarang().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelBarang");
+                panelBarang.refresh();
+            }
+        });
+        panelMenu1.getJbtnPembeli().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelPembeli");
+                panelPembeli.refresh();
+            }
+        });
+        panelMenu1.getJbtnSupplier().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelSupplier");
+                panelSupplier.refresh();
+            }
+        });
+        panelMenu1.getJbtnPembelian().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelPembelian");
+                panelPembelian.refresh();
+            }
+        });
+        panelMenu1.getJbtnPenjualan().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelTambahTransaksi");
+                panelTransaksi.refresh();
+            }
+        });
+        panelMenu1.getJbtnLaporan().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelLaporan");
+                panelLaporan.refresh();
+            }
+        });
+        panelMenu1.getJbtnPengaturan().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(centerPanel, "panelPengaturan");
+            }
+        });
+         panelMenu1.getJbtnKeluar().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               close();
+            }
+        });
+        
+        this.setSize(1000, 600);
+    }
+
+    public void close(){
+        int option=JOptionPane.showConfirmDialog(null, "Apakah anda yakin akan keluar?","",JOptionPane.YES_NO_OPTION);
+        if(option==JOptionPane.YES_OPTION){
+            KursFactory.writeConfig();
+            System.exit(0);
+        }
+    }
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        panelMenu1 = new com.prima.view.PanelMenu();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        kurs = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("PD.Prima");
+        setMinimumSize(new java.awt.Dimension(300, 0));
+        getContentPane().add(panelMenu1, java.awt.BorderLayout.LINE_START);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(jLabel1, gridBagConstraints);
+
+        kurs.setText("jLabel2");
+        jPanel1.add(kurs, new java.awt.GridBagConstraints());
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new FrameUtama().setVisible(true);
+            }
+        });
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel kurs;
+    private com.prima.view.PanelMenu panelMenu1;
+    // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+       close();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+   
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+      
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+      
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+       
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+      
+    }
+private class Task extends TimerTask{
+        @Override
+        public void run() {
+            kurs.setText("1USD = "+KursFactory.getInstance().getKurs()+" IDR");
+        }
+}
+}

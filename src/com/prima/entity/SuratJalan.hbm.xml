@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2012 3:04:36 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.SuratJalan" table="surat_jalan" catalog="primaDB">
+        <id name="idSuratJalan" type="string">
+            <column name="id_surat_jalan" length="10" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="transaksi" class="com.prima.entity.Transaksi" fetch="select">
+            <column name="id_transaksi" length="10" />
+        </many-to-one>
+        <property name="kendaraan" type="string">
+            <column name="kendaraan" length="45" />
+        </property>
+        <property name="noKendaraan" type="string">
+            <column name="no_kendaraan" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

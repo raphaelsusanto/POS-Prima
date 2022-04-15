@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportTransaksiKredit" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     pembeli.`id_pembeli` AS pembeli_id_pembeli,
+     pembeli.`nama` AS pembeli_nama,
+     pembeli.`alamat` AS pembeli_alamat,
+     pembeli.`telp` AS pembeli_telp,
+     pembeli.`email` AS pembeli_email,
+     transaksi.`id_transaksi` AS transaksi_id_transaksi,
+     transaksi.`tgl_jual` AS transaksi_tgl_jual,
+     transaksi.`kurs` AS transaksi_kurs,
+     transaksi.`harga_total` AS transaksi_harga_total,
+     transaksi.`status` AS transaksi_status,
+     transaksi.`id_pembeli` AS transaksi_id_pembeli,
+     kredit.`id_kredit` AS kredit_id_kredit,
+     kredit.`tgl_akhir_pelunasan` AS kredit_tgl_akhir_pelunasan,
+     kredit.`status` AS kredit_status,
+     kredit.`id_transaksi` AS kredit_id_transaksi,
+     ifnull(sum(cicilan.`jumlah_bayar`),0) AS jumlah_bayar,
+     cicilan.`id_kredit` AS cicilan_id_kredit
+FROM
+     `pembeli` pembeli INNER JOIN `transaksi` transaksi ON pembeli.`id_pembeli` = transaksi.`id_pembeli`
+     INNER JOIN `kredit` kredit ON transaksi.`id_transaksi` = kredit.`id_transaksi`
+     left outer JOIN `cicilan` cicilan ON kredit.`id_kredit` = cicilan.`id_kredit`
+WHERE
+     kredit.status = 0
+group by cicilan.`id_kredit`]]>
+	</queryString>
+	<field name="pembeli_id_pembeli" class="java.lang.Integer"/>
+	<field name="pembeli_nama" class="java.lang.String"/>
+	<field name="pembeli_alamat" class="java.lang.String"/>
+	<field name="pembeli_telp" class="java.lang.String"/>
+	<field name="pembeli_email" class="java.lang.String"/>
+	<field name="transaksi_id_transaksi" class="java.lang.String"/>
+	<field name="transaksi_tgl_jual" class="java.sql.Timestamp"/>
+	<field name="transaksi_kurs" class="java.lang.Integer"/>
+	<field name="transaksi_harga_total" class="java.lang.Integer"/>
+	<field name="transaksi_status" class="java.lang.Boolean"/>
+	<field name="transaksi_id_pembeli" class="java.lang.Integer"/>
+	<field name="kredit_id_kredit" class="java.lang.Integer"/>
+	<field name="kredit_tgl_akhir_pelunasan" class="java.sql.Date"/>
+	<field name="kredit_status" class="java.lang.Boolean"/>
+	<field name="kredit_id_transaksi" class="java.lang.String"/>
+	<field name="jumlah_bayar" class="java.math.BigDecimal"/>
+	<field name="cicilan_id_kredit" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="28" width="480" height="28"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Transaksi Kredit Belum Lunas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="0" width="89" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tanggal cetak ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="455" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="125" height="28"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PD.Prima]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nama Pembeli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tanggal Pelunasan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Harga Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Jumlah Bayar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Sisa Bayar]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField pattern="Rp #,##0.00">
+				<reportElement x="400" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{transaksi_harga_total}-$F{jumlah_bayar}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="19" width="500" height="1" forecolor="#5F65FE"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{pembeli_nama}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="100" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{kredit_tgl_akhir_pelunasan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0.00">
+				<reportElement x="200" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{transaksi_harga_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="Rp #,##0.00">
+				<reportElement x="300" y="1" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{jumlah_bayar}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

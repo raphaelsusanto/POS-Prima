@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 29, 2012 9:01:21 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.Transaksi" table="transaksi" catalog="primaDB">
+        <id name="idTransaksi" type="string">
+            <column name="id_transaksi" length="10" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="pembeli" class="com.prima.entity.Pembeli" fetch="select">
+            <column name="id_pembeli" />
+        </many-to-one>
+        <property name="tglJual" type="timestamp">
+            <column name="tgl_jual" length="19" />
+        </property>
+        <property name="kurs" type="java.lang.Integer">
+            <column name="kurs" />
+        </property>
+        <property name="hargaTotal" type="java.lang.Integer">
+            <column name="harga_total" />
+        </property>
+        <property name="hargaTotalUsd" type="double">
+            <column name="harga_totalUSD" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="mata" type="boolean">
+            <column name="mata" not-null="true" />
+        </property>
+        <property name="status" type="java.lang.Boolean">
+            <column name="status" />
+        </property>
+        <set name="suratJalans" inverse="true">
+            <key>
+                <column name="id_transaksi" length="10" />
+            </key>
+            <one-to-many class="com.prima.entity.SuratJalan" />
+        </set>
+        <set name="detailTransaksis" inverse="true">
+            <key>
+                <column name="id_transaksi" length="10" />
+            </key>
+            <one-to-many class="com.prima.entity.DetailTransaksi" />
+        </set>
+        <set name="kredits" inverse="true">
+            <key>
+                <column name="id_transaksi" length="10" />
+            </key>
+            <one-to-many class="com.prima.entity.Kredit" />
+        </set>
+    </class>
+</hibernate-mapping>

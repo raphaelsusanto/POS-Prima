@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NotaTransaksi" language="groovy" pageWidth="600" pageHeight="350" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idTransaksi" class="java.lang.String"/>
+	<parameter name="terbilang" class="java.lang.String"/>
+	<parameter name="kurs" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT p.*,
+     barang.`id_barang` AS barang_id_barang,
+     barang.`nama` AS barang_nama,
+     barang.`stock` AS barang_stock,
+     barang.`harga_IDR` AS barang_harga,
+     barang.`satuan_jual` AS barang_satuan_jual,
+     case(barang.`satuan_jual`) when 0 then 'Liter' when 1 then 'Kg' end as satuanJual,
+     transaksi.`id_transaksi` AS transaksi_id_transaksi,
+     transaksi.`tgl_jual` AS transaksi_tgl_jual,
+     transaksi.`kurs` AS transaksi_kurs,
+     transaksi.`harga_total` AS transaksi_harga_total,
+     transaksi.`status` AS transaksi_status,
+     detail_transaksi.`id_detail_transaksi` AS detail_transaksi_id_detail_transaksi,
+     detail_transaksi.`jumlah` AS detail_transaksi_jumlah,
+     detail_transaksi.`harga` AS detail_transaksi_harga,
+     detail_transaksi.`mata_uang` AS detail_transaksi_mata_uang,
+     detail_transaksi.`id_barang` AS detail_transaksi_id_barang,
+     detail_transaksi.`id_transaksi` AS detail_transaksi_id_transaksi,detail_transaksi.`jumlah`*detail_transaksi.`harga` as total,
+case(detail_transaksi.`mata_uang`) when 0 then '$' when 1 then 'Rp' end as satuan,
+case(detail_transaksi.`mata_uang`) when 0 then detail_transaksi.harga*transaksi.`kurs`*detail_transaksi.`jumlah` when 1 then detail_transaksi.harga*detail_transaksi.`jumlah` end as hargatotal2,
+detail_transaksi.`harga` * detail_transaksi.`jumlah` as hargatotalusd
+FROM
+     `barang` barang INNER JOIN `detail_transaksi` detail_transaksi ON barang.`id_barang` = detail_transaksi.`id_barang`
+     INNER JOIN `transaksi` transaksi ON detail_transaksi.`id_transaksi` = transaksi.`id_transaksi`
+join pembeli p on p.id_pembeli=transaksi.id_pembeli
+where transaksi.`id_transaksi`=$P{idTransaksi}]]>
+	</queryString>
+	<field name="id_pembeli" class="java.lang.Integer"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="alamat" class="java.lang.String"/>
+	<field name="telp" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="barang_id_barang" class="java.lang.Integer"/>
+	<field name="barang_nama" class="java.lang.String"/>
+	<field name="barang_stock" class="java.lang.Double"/>
+	<field name="barang_harga" class="java.lang.Double"/>
+	<field name="barang_satuan_jual" class="java.lang.Boolean"/>
+	<field name="satuanJual" class="java.lang.String"/>
+	<field name="transaksi_id_transaksi" class="java.lang.String"/>
+	<field name="transaksi_tgl_jual" class="java.sql.Timestamp"/>
+	<field name="transaksi_kurs" class="java.lang.Integer"/>
+	<field name="transaksi_harga_total" class="java.lang.Integer"/>
+	<field name="transaksi_status" class="java.lang.Boolean"/>
+	<field name="detail_transaksi_id_detail_transaksi" class="java.lang.String"/>
+	<field name="detail_transaksi_jumlah" class="java.lang.Double"/>
+	<field name="detail_transaksi_harga" class="java.lang.Double"/>
+	<field name="detail_transaksi_mata_uang" class="java.lang.Boolean"/>
+	<field name="detail_transaksi_id_barang" class="java.lang.Integer"/>
+	<field name="detail_transaksi_id_transaksi" class="java.lang.String"/>
+	<field name="total" class="java.lang.Double"/>
+	<field name="satuan" class="java.lang.String"/>
+	<field name="hargatotal2" class="java.lang.Double"/>
+	<field name="hargatotalusd" class="java.lang.Double"/>
+	<variable name="hargatotal2_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{hargatotal2}]]></variableExpression>
+	</variable>
+	<variable name="hargatotal2_2" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{hargatotal2}]]></variableExpression>
+	</variable>
+	<variable name="hargatotalusd_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{hargatotalusd}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<rectangle>
+				<reportElement x="325" y="0" width="224" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="325" y="0" width="89" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tgl ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="414" y="0" width="135" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="48" width="101" height="23"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Faktur No. ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="325" y="20" width="224" height="44"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="325" y="20" width="224" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KEPADA YTH.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="48" width="224" height="23"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{transaksi_id_transaksi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="34" width="224" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="49" width="224" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[PD. PRIMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="20" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[Taman Holis Indah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="34" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[Bandung]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15">
+			<rectangle>
+				<reportElement x="0" y="0" width="549" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="0" width="99" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUMLAH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="237" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAMA BARANG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="0" width="100" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HARGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="0" width="112" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="100" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="339" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="436" y="0" width="1" height="15"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField>
+				<reportElement x="0" y="0" width="51" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detail_transaksi_jumlah}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="340" y="0" width="97" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detail_transaksi_harga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="0" width="49" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{satuanJual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="0" width="236" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barang_nama}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="14" width="549" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="100" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="339" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="436" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="548" y="0" width="1" height="15"/>
+			</line>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="437" y="0" width="111" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{hargatotalusd}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="76" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="430" y="16" width="130" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{hargatotalusd_1}*1.1]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="3" y="0" width="364" height="16"/>
+			</rectangle>
+			<textField>
+				<reportElement x="3" y="1" width="364" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{terbilang}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="330" y="31" width="100" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Hormat kami,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="16" width="52" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="31" width="100" height="15"/>
+				<textElement/>
+				<text><![CDATA[Tanda Terima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="0" width="52" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PPN 10% ]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="449" y="0" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{hargatotalusd_1}*0.1]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

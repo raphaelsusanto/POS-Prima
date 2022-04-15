@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="primaDB"/>
+  <table-filter match-name="supplier"/>
+  <table-filter match-name="pengguna"/>
+  <table-filter match-name="transaksi"/>
+  <table-filter match-name="pembelian_detail"/>
+  <table-filter match-name="barang"/>
+  <table-filter match-name="pembeli"/>
+  <table-filter match-name="surat_jalan"/>
+  <table-filter match-name="cicilan"/>
+  <table-filter match-name="detail_transaksi"/>
+  <table-filter match-name="kredit"/>
+  <table-filter match-name="pembelian"/>
+</hibernate-reverse-engineering>

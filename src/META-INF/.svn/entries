@@ -1,0 +1,28 @@
+10
+
+dir
+0
+http://xp-dev.com/svn/prima-repo/Prima/src/META-INF
+http://xp-dev.com/svn/prima-repo
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+9831afa7-4b69-4a65-b3d8-502ac8b69618
+

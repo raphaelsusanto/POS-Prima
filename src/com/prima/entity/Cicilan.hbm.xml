@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 29, 2012 9:01:21 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.Cicilan" table="cicilan" catalog="primaDB">
+        <id name="idCicilan" type="java.lang.Integer">
+            <column name="id_cicilan" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="kredit" class="com.prima.entity.Kredit" fetch="select">
+            <column name="id_kredit" />
+        </many-to-one>
+        <property name="jumlahBayar" type="java.lang.Double">
+            <column name="jumlah_bayar" precision="22" scale="0" />
+        </property>
+        <property name="tglCicilan" type="date">
+            <column name="tgl_cicilan" length="10" />
+        </property>
+        <property name="jenis" type="string">
+            <column name="jenis" length="10" not-null="true" />
+        </property>
+        <property name="noGiro" type="string">
+            <column name="no_giro" length="15" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

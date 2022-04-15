@@ -1,0 +1,45 @@
+10
+
+dir
+1
+http://xp-dev.com/svn/prima-repo/Prima/src
+http://xp-dev.com/svn/prima-repo
+
+
+
+2011-09-05T00:30:34.723298Z
+1
+paelll
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+9831afa7-4b69-4a65-b3d8-502ac8b69618
+
+
+
+
+
+
+0
+
+META-INF
+dir
+
+
+
+add
+
+main
+dir
+

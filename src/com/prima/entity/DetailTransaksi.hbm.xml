@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2012 3:04:36 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.DetailTransaksi" table="detail_transaksi" catalog="primaDB">
+        <id name="idDetailTransaksi" type="string">
+            <column name="id_detail_transaksi" length="10" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="transaksi" class="com.prima.entity.Transaksi" fetch="select">
+            <column name="id_transaksi" length="10" />
+        </many-to-one>
+        <many-to-one name="barang" class="com.prima.entity.Barang" fetch="select">
+            <column name="id_barang" />
+        </many-to-one>
+        <property name="jumlah" type="java.lang.Double">
+            <column name="jumlah" precision="22" scale="0" />
+        </property>
+        <property name="harga" type="java.lang.Double">
+            <column name="harga" precision="22" scale="0" />
+        </property>
+        <property name="mataUang" type="java.lang.Boolean">
+            <column name="mata_uang" />
+        </property>
+    </class>
+</hibernate-mapping>

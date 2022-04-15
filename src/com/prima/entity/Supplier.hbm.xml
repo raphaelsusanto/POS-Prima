@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2012 3:04:36 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.Supplier" table="supplier" catalog="primaDB">
+        <id name="idSupplier" type="java.lang.Integer">
+            <column name="id_supplier" />
+            <generator class="identity" />
+        </id>
+        <property name="nama" type="string">
+            <column name="nama" length="45" />
+        </property>
+        <property name="alamat" type="string">
+            <column name="alamat" length="45" />
+        </property>
+        <property name="telp" type="string">
+            <column name="telp" length="15" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <set name="pembelians" inverse="true">
+            <key>
+                <column name="id_supplier" />
+            </key>
+            <one-to-many class="com.prima.entity.Pembelian" />
+        </set>
+    </class>
+</hibernate-mapping>

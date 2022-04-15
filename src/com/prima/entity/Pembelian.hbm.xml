@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2012 3:04:36 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.prima.entity.Pembelian" table="pembelian" catalog="primaDB">
+        <id name="idPembelian" type="string">
+            <column name="id_pembelian" length="10" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="supplier" class="com.prima.entity.Supplier" fetch="select">
+            <column name="id_supplier" />
+        </many-to-one>
+        <property name="tglBeli" type="timestamp">
+            <column name="tgl_beli" length="19" />
+        </property>
+        <property name="kurs" type="java.lang.Integer">
+            <column name="kurs" />
+        </property>
+        <property name="hargaTotal" type="java.lang.Integer">
+            <column name="harga_total" />
+        </property>
+        <property name="status" type="java.lang.Boolean">
+            <column name="status" />
+        </property>
+        <set name="pembelianDetails" inverse="true">
+            <key>
+                <column name="id_pembelian" length="10" />
+            </key>
+            <one-to-many class="com.prima.entity.PembelianDetail" />
+        </set>
+    </class>
+</hibernate-mapping>

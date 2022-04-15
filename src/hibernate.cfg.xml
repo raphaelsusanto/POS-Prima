@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/primaDB</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">toor</property>
+    <mapping resource="com/prima/entity/Kredit.hbm.xml"/>
+    <mapping resource="com/prima/entity/Barang.hbm.xml"/>
+    <mapping resource="com/prima/entity/PembelianDetail.hbm.xml"/>
+    <mapping resource="com/prima/entity/Cicilan.hbm.xml"/>
+    <mapping resource="com/prima/entity/DetailTransaksi.hbm.xml"/>
+    <mapping resource="com/prima/entity/Pengguna.hbm.xml"/>
+    <mapping resource="com/prima/entity/Pembeli.hbm.xml"/>
+    <mapping resource="com/prima/entity/Pembelian.hbm.xml"/>
+    <mapping resource="com/prima/entity/SuratJalan.hbm.xml"/>
+    <mapping resource="com/prima/entity/Supplier.hbm.xml"/>
+    <mapping resource="com/prima/entity/Transaksi.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>
